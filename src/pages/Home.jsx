@@ -7,8 +7,6 @@ import { Container, Checkbox, Typography, Stack, Box } from "@mui/material";
 const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  console.log("Selected Category:", selectedCategory);
-
   const categories = ["Bowl", "Thali", "Salad", "breakFast"];
 
   return (

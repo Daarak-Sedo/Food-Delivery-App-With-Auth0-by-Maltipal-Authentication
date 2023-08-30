@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Card,
   Box,
@@ -28,6 +28,19 @@ import { useSelector } from "react-redux";
 
 const Header = () => {
   const products = useSelector((state) => state.cart);
+
+  let cartQuantity = () => {
+   return products.items.length
+};
+
+useEffect(() => {
+cartQuantity();
+
+  // Do something with the cart quantity, such as updating state or rendering
+}, [products]);
+
+
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -40,6 +53,10 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setUserModal(null);
   };
+
+
+  const user_name=localStorage.getItem("user_name")
+  const user_name_1st_letter = user_name.charAt(0);
 
   const Pages = [
     { label: "Home", to: "/" },
@@ -113,7 +130,7 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <NavLink to="/cart">
             <IconButton aria-label="cart" sx={{ marginRight: "20px" }}>
-              <Badge badgeContent={products.length} color="primary">
+              <Badge badgeContent={cartQuantity()} color="primary">
                 <ShoppingCartIcon sx={{color:"#00b0ff"}} />
               </Badge>
             </IconButton>
@@ -122,7 +139,7 @@ const Header = () => {
 
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" sx={{color:"#00b0ff"}}/>
+                <Avatar alt="Remy Sharp"  sx={{color:"#00b0ff"}}>{user_name_1st_letter}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu

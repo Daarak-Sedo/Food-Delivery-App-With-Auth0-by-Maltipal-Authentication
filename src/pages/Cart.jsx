@@ -1,7 +1,6 @@
 // import { getNodeText } from '@testing-library/react';
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { remove } from "../ store/cartSlice";
 import {
   Container,
   Typography,
@@ -10,34 +9,48 @@ import {
   CardContent,
   CardMedia,
   Button,
+  ButtonGroup,
   Stack,
 } from "@mui/material";
 import Layout from "../components/Layout/Layout";
+import { add, remove, increment, decrement } from "../ store/cartSlice";
 
 const Cart = () => {
   const dispatch = useDispatch(); // To Send Action
 
   const products = useSelector((state) => state.cart); // to get Action/Function
+  console.log("products", products);
+
+  const [calculatedTotalPrice, setCalculatedTotalPrice] = useState(0);
+  const [totalQuantity, setTotalQuantity] = useState(0)
 
   const handleRemove = (productId) => {
     dispatch(remove(productId));
   };
 
-  //total price
-  const totalPrice = () => {
-    try {
-      let total = 0;
-      products?.map((product) => {
-        total = total + product.price;
-      });
-      return total.toLocaleString("en-IN", {
-        style: "currency",
-        currency: "INR",
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const handleIncrement = (productId) => {
+    dispatch(increment(productId));
   };
+
+  const handleDecrement = (productId) => {
+    dispatch(decrement(productId));
+  };
+
+  //total price 
+
+  let totalPrice = () => {
+      let total = 0;
+      products.items?.forEach((product) => {
+        total = total + product.price * product.quantity;
+      });
+      setCalculatedTotalPrice(total);
+  };
+
+  useEffect(() => {
+    totalPrice();
+  }, [products]);
+
+    //total Quantity
 
   return (
     <Layout>
@@ -47,7 +60,9 @@ const Cart = () => {
         <Container component="main" maxWidth="md">
           <Typography variant="h4"> Cart - </Typography>
 
-          {products?.map((product) => (
+          {products.items?.map((product) => (
+             // Check if the product's quantity is greater than 0
+             product.quantity > 0 && (
             <Card
               sx={{
                 maxWidth: "100%",
@@ -67,19 +82,45 @@ const Cart = () => {
               />
               <CardContent>
                 <Typography variant="title">{product.name}</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {product.price}
+                <Typography variant="body2" color="text.secondary" sx={{ color: "green"}}>
+                  {product.price} ₹
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button
-                  variant="contained"
-                  onClick={() => handleRemove(product.id)}
-                >
-                  Remove
-                </Button>
+                <Stack spacing={2} direction="row">
+                  {product.quantity > 0 && (
+                    <ButtonGroup
+                      disableElevation
+                      variant="contained"
+                      aria-label="Quantity control buttons"
+                    >
+                      <Button
+                        size="small"
+                        onClick={() => handleDecrement(product.id)}
+                      >
+                        -
+                      </Button>
+                      <Typography variant="body1">
+                        {product.quantity}
+                      </Typography>
+                      <Button
+                        size="small"
+                        onClick={() => handleIncrement(product.id)}
+                      >
+                        +
+                      </Button>
+                    </ButtonGroup>
+                  )}
+                  <Button
+                    variant="contained"
+                    onClick={() => handleRemove(product.id)}
+                  >
+                    Remove
+                  </Button>
+                </Stack>
               </CardActions>
             </Card>
+             )
           ))}
         </Container>
 
@@ -89,10 +130,13 @@ const Cart = () => {
 
           <hr />
           <Typography variant="h4">
-            {" "}
             total price -
-            <Typography variant="h4" component="span" sx={{ color: "green", margin:2 }}>
-              {totalPrice()}
+            <Typography
+              variant="h4"
+              component="span"
+              sx={{ color: "green", margin: 2 }}
+            >
+              {calculatedTotalPrice}
             </Typography>
           </Typography>
         </Container>

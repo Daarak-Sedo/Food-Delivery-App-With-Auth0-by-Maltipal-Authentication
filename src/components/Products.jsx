@@ -13,6 +13,7 @@ import {
   AppBar,
   Divider,
   Toolbar,
+  ButtonGroup,
   Grid,
   Avatar,
   Menu,
@@ -41,15 +42,37 @@ import thali_img7 from "../images/thali images/thali img7.JPG";
 import thali_img8 from "../images/thali images/thali img8.JPG";
 
 import { useDispatch, useSelector } from "react-redux";
-import { add } from "../ store/cartSlice";
+import { add , remove, increment, decrement} from "../ store/cartSlice";
 
 const Cart = ({ filterType }) => {
   const [dataToMap, setDataToMap] = useState(null);
 
   const dispatch = useDispatch(); // to send Action
+
   const handleAdd = (product) => {
-    dispatch(add(product));
+    const cartProduct = cartItems.items.find((item) => item.id === product.id);
+  
+    if (cartProduct && cartProduct.quantity > 0) {
+      dispatch(increment(product.id)); // Increment quantity if product is already in cart
+    } else {
+      dispatch(add(product)); // Add new product to cart
+      dispatch(increment(product.id)); // Increment quantity after adding
+    }
   };
+  
+
+// After retrieving cartItems
+const cartItems = useSelector((state) => state.cart);  //get entire cart
+
+// Mapping dataToMap with quantities
+const dataToMapWithQuantity = dataToMap?.map((product) => {
+  const cartProduct = cartItems.items.find((item) => item.id === product.id);
+  return { ...product, quantity: cartProduct ? cartProduct.quantity : 0 };
+});
+
+console.log("dataToMapWithQuantity",dataToMapWithQuantity)
+  
+
 
   const data = [
     {
@@ -58,6 +81,7 @@ const Cart = ({ filterType }) => {
       category: "breakFast",
       price: 199,
       image: brk_fast_img1,
+      quantity: 0,
     },
     {
       id: 2,
@@ -66,6 +90,7 @@ const Cart = ({ filterType }) => {
 
       price: 149,
       image: brk_fast_img2,
+      quantity: 0,
     },
     {
       id: 3,
@@ -73,6 +98,7 @@ const Cart = ({ filterType }) => {
       category: "breakFast",
       price: 600,
       image: brk_fast_img3,
+      quantity: 0,
     },
     {
       id: 4,
@@ -80,6 +106,7 @@ const Cart = ({ filterType }) => {
       category: "breakFast",
       price: 189,
       image: brk_fast_img4,
+      quantity: 0,
     },
     {
       id: 5,
@@ -87,6 +114,7 @@ const Cart = ({ filterType }) => {
       category: "breakFast",
       price: 153,
       image: brk_fast_img5,
+      quantity: 0,
     },
     {
       id: 6,
@@ -94,6 +122,7 @@ const Cart = ({ filterType }) => {
       category: "breakFast",
       price: 149,
       image: brk_fast_img6,
+      quantity: 0,
     },
     {
       id: 7,
@@ -101,6 +130,7 @@ const Cart = ({ filterType }) => {
       category: "breakFast",
       price: 409,
       image: brk_fast_img7,
+      quantity: 0,
     },
     {
       id: 8,
@@ -108,6 +138,7 @@ const Cart = ({ filterType }) => {
       category: "breakFast",
       price: 149,
       image: brk_fast_img8,
+      quantity: 0,
     },
 
     {
@@ -116,6 +147,7 @@ const Cart = ({ filterType }) => {
       category: "Thali",
       price: 199,
       image: thali_img1,
+      quantity: 0,
     },
     {
       id: 10,
@@ -123,6 +155,7 @@ const Cart = ({ filterType }) => {
       category: "Thali",
       price: 199,
       image: thali_img2,
+      quantity: 0,
     },
     {
       id: 11,
@@ -130,6 +163,7 @@ const Cart = ({ filterType }) => {
       category: "Thali",
       price: 243,
       image: thali_img3,
+      quantity: 0,
     },
     {
       id: 12,
@@ -137,13 +171,15 @@ const Cart = ({ filterType }) => {
       category: "Thali",
       price: 465,
       image: thali_img4,
+      quantity: 0,
     },
     {
       id: 13,
       name: "Creamy Egg Bread Scramble",
       category: "Thali",
-      price:320,
+      price: 320,
       image: thali_img5,
+      quantity: 0,
     },
     {
       id: 14,
@@ -151,6 +187,7 @@ const Cart = ({ filterType }) => {
       category: "Thali",
       price: 464,
       image: thali_img6,
+      quantity: 0,
     },
     {
       id: 15,
@@ -158,6 +195,7 @@ const Cart = ({ filterType }) => {
       category: "Thali",
       price: 126,
       image: thali_img7,
+      quantity: 0,
     },
     {
       id: 16,
@@ -165,6 +203,7 @@ const Cart = ({ filterType }) => {
       category: "Thali",
       price: 212,
       image: thali_img8,
+      quantity: 0,
     },
   ];
 
@@ -179,34 +218,67 @@ const Cart = ({ filterType }) => {
     }
   }, [filterType]);
 
-  
+
+
+  // const [quantity, setQuantity] = useState(0); // Initialize quantity with 1
+
+
+  const handleIncrement = (productId) => {
+    dispatch(increment(productId));
+  };
+
+  const handleDecrement = (productId) => {
+    dispatch(decrement(productId));
+  };
+
 
   return (
     <>
       <Container maxWidth="xl">
         <Grid container spacing={3}>
-          {dataToMap?.map((product) => (
+          {dataToMapWithQuantity?.map((product) => (
             <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
               <Card sx={{ maxWidth: 345, height: "100%" }}>
-                {/*---------- Height 100% will give/Adjust - same height to Each Card ---------------*/}
                 <CardMedia
                   component="img"
                   image={product.image}
                   alt="green iguana"
-                  sx={{ height: 200 }} // Set a fixed height for the image
+                  sx={{ height: 200 }}
                 />
                 <CardContent>
-                  {/* <Typography  variant="h5" component="div" noWrap>  //--------  noWrap will show- ...
-                    {item.name}
-                  </Typography> */}
                   <Typography variant="h6" component="div">
                     {product.name}
                   </Typography>
                 </CardContent>
                 <CardActions
-                  sx={{ display: "flex", justifyContent: "space-between" }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
                 >
-                  <Typography variant="title">{product.price}</Typography>
+                  <Typography variant="title">{product.price} ₹ </Typography>
+                  {product.quantity > 0 ? (
+                  <ButtonGroup
+                    disableElevation
+                    variant="contained"
+                    aria-label="Quantity control buttons"
+                  >
+                    <Button
+                      size="small"
+                      onClick={() => handleDecrement(product.id)}
+                    >
+                      -
+                    </Button>
+                    <Typography variant="body1">{product.quantity}</Typography>
+                    <Button
+                      size="small"
+                      onClick={() => handleIncrement(product.id)}
+                    >
+                      +
+                    </Button>
+                  </ButtonGroup>
+                ) : (
                   <Button
                     size="small"
                     variant="contained"
@@ -214,6 +286,7 @@ const Cart = ({ filterType }) => {
                   >
                     Add
                   </Button>
+                )}
                 </CardActions>
               </Card>
             </Grid>

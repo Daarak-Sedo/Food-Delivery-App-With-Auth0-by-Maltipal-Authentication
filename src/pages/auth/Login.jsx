@@ -18,15 +18,12 @@ import axios from "axios";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const nevigate=useNavigate();
+    const nevigate=useNavigate();
 
   const [data, setData] = useState({
-    name: "",
-    phone_number: "",
     email: "",
     password: "",
   });
@@ -42,16 +39,17 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const response = await axios.post(`${base_url}/auth/signup`, data); // Assuming `base_url` and `data` are defined elsewhere
-      console.log("response", response);
-      toast.success("User registered successfully"); // Display a success message
-      nevigate(("/login"));
+      console.log("base_url", base_url);
+      const response = await axios.post(`${base_url}/auth/login`, data); // Assuming `base_url` and `data` are defined elsewhere
+      localStorage.setItem("token", response.data.token)
+      localStorage.setItem("user_id", response.data.user._id)
+      localStorage.setItem("user_name", response.data.user.name)
+      toast.success("User LogIn successfully"); // Display a success message
+      nevigate(("/"));
     } catch (error) {
       console.log("error", error);
-      toast.error("Error during registration"); // Display an error message
+      toast.error(error.response.data.message); // Display an error message
     }
-   
-    
   };
 
   return (
@@ -70,7 +68,7 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Log In
           </Typography>
           <Box
             component="form"
@@ -79,31 +77,8 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="name"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="Name"
-                  autoFocus
-                  value={data.name}
-                  onChange={(e) => handleChange("name", e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  type="Number"
-                  label="Phone Number"
-                  name="phone_number"
-                  autoComplete="family-name"
-                  value={data.phone_number}
-                  onChange={(e) => handleChange("phone_number", e.target.value)}
-                />
-              </Grid>
+              
+              
               <Grid item xs={12}>
                 <TextField
                   required
@@ -144,12 +119,12 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Log In
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
+                <Link href="/signup" variant="body2">
+                  Create New Account? Sign Up
                 </Link>
               </Grid>
             </Grid>
