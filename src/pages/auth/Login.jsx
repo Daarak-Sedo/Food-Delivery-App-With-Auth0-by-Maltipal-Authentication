@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,23 +11,28 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
+import GoogleIcon from "@mui/icons-material/Google";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { base_url } from "../../utils/config";
 import axios from "axios";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useAuth0, User } from "@auth0/auth0-react";
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-    const nevigate=useNavigate();
+  const nevigate = useNavigate();
+
+  const { user, loginWithRedirect } = useAuth0();
+// user data we are setting in home page for Profile Deatils
 
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-  console.log("data",data);
+  console.log("data", data);
 
   const handleChange = (fieldName, value) => {
     setData((prevData) => ({
@@ -41,11 +46,11 @@ export default function SignUp() {
       event.preventDefault();
       console.log("base_url", base_url);
       const response = await axios.post(`${base_url}/auth/login`, data); // Assuming `base_url` and `data` are defined elsewhere
-      localStorage.setItem("token", response.data.token)
-      localStorage.setItem("user_id", response.data.user._id)
-      localStorage.setItem("user_name", response.data.user.name)
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user_id", response.data.user._id);
+      localStorage.setItem("user_name", response.data.user.name);
       toast.success("User LogIn successfully"); // Display a success message
-      nevigate(("/"));
+      nevigate("/");
     } catch (error) {
       console.log("error", error);
       toast.error(error.response.data.message); // Display an error message
@@ -54,7 +59,7 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-       <Toaster />
+      <Toaster />
       <Container component="main" maxWidth="xs" sx={{ mt: 15 }}>
         <Box
           sx={{
@@ -77,8 +82,6 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              
-              
               <Grid item xs={12}>
                 <TextField
                   required
@@ -120,6 +123,15 @@ export default function SignUp() {
               sx={{ mt: 3, mb: 2 }}
             >
               Log In
+            </Button>
+            <Button
+              sx={{ mt: 1, mb: 2 }}
+              fullWidth
+              variant="contained"
+              onClick={() => loginWithRedirect()}
+            >
+              <GoogleIcon></GoogleIcon>
+              Log In with Google
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

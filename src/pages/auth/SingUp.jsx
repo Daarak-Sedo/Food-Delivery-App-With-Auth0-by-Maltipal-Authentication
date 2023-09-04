@@ -46,9 +46,9 @@ export default function SignUp() {
       console.log("response", response);
       toast.success("User registered successfully"); // Display a success message
       nevigate(("/login"));
-    } catch (error) {
-      console.log("error", error);
-      toast.error("Error during registration"); // Display an error message
+    } catch (err) {
+      console.log("error", err);
+      toast.error(err.response.data.message); // Display an error message
     }
    
     

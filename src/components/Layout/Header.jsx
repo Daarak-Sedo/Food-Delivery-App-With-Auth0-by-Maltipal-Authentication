@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Box,
@@ -24,22 +24,18 @@ import { NavLink } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector } from "react-redux";
 
-
-
 const Header = () => {
   const products = useSelector((state) => state.cart);
 
   let cartQuantity = () => {
-   return products.items.length
-};
+    return products.items.length;
+  };
 
-useEffect(() => {
-cartQuantity();
+  useEffect(() => {
+    cartQuantity();
 
-  // Do something with the cart quantity, such as updating state or rendering
-}, [products]);
-
-
+    // Do something with the cart quantity, such as updating state or rendering
+  }, [products]);
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
@@ -54,9 +50,9 @@ cartQuantity();
     setUserModal(null);
   };
 
-
-  const user_name=localStorage.getItem("user_name")
-  const user_name_1st_letter = user_name.charAt(0);
+  const user_name = localStorage.getItem("user_name");
+  const user_profile = localStorage.getItem("user_profile");
+  const user_name_1st_letter = user_name?.charAt(0);
 
   const Pages = [
     { label: "Home", to: "/" },
@@ -84,9 +80,8 @@ cartQuantity();
             component={NavLink}
             to={item.to}
             onClick={handleDrawerToggle}
-          
           >
-            <ListItemText primary={item.label}  />
+            <ListItemText primary={item.label} />
           </ListItem>
         ))}
       </Box>
@@ -129,19 +124,27 @@ cartQuantity();
 
           <Box sx={{ flexGrow: 0 }}>
             <NavLink to="/cart">
-            <IconButton aria-label="cart" sx={{ marginRight: "20px" }}>
-              <Badge badgeContent={cartQuantity()} color="primary">
-                <ShoppingCartIcon sx={{color:"#00b0ff"}} />
-              </Badge>
-            </IconButton>
+              <IconButton aria-label="cart" sx={{ marginRight: "20px" }}>
+                <Badge badgeContent={cartQuantity()} color="primary">
+                  <ShoppingCartIcon sx={{ color: "#00b0ff" }} />
+                </Badge>
+              </IconButton>
             </NavLink>
-            
 
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp"  sx={{color:"#00b0ff"}}>{user_name_1st_letter}</Avatar>
+                {user_profile ? (
+                  <Avatar sx={{ backgroundColor: "#00b0ff" }}>
+                    <img src={user_profile} alt="User Avatar" />
+                  </Avatar>
+                ) : (
+                  <Avatar sx={{ backgroundColor: "#00b0ff" }}>
+                    {user_name_1st_letter}
+                  </Avatar>
+                )}
               </IconButton>
             </Tooltip>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
