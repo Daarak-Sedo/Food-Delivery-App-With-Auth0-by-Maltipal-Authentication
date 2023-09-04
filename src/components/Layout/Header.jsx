@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  Card,
   Box,
-  List,
   ListItem,
   ListItemText,
   AppBar,
@@ -10,7 +8,6 @@ import {
   Toolbar,
   Avatar,
   Menu,
-  styled,
   MenuItem,
   IconButton,
   Drawer,

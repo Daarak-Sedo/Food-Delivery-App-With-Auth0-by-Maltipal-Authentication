@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   Card,
-  Box,
-  List,
   Container,
-  ListItem,
   CardActions,
   CardContent,
   Button,
   CardMedia,
-  ListItemText,
-  AppBar,
-  Divider,
-  Toolbar,
   ButtonGroup,
   Grid,
-  Avatar,
-  Menu,
-  MenuItem,
-  IconButton,
-  Drawer,
   Typography,
-  Tooltip,
 } from "@mui/material";
 import brk_fast_img1 from "../images/break fast imges/brk fast img 1.jpg";
 import brk_fast_img2 from "../images/break fast imges/brk fast img2.jpg";
@@ -42,7 +29,7 @@ import thali_img7 from "../images/thali images/thali img7.JPG";
 import thali_img8 from "../images/thali images/thali img8.JPG";
 
 import { useDispatch, useSelector } from "react-redux";
-import { add , remove, increment, decrement} from "../ store/cartSlice";
+import { add, increment, decrement } from "../ store/cartSlice";
 
 const Cart = ({ filterType }) => {
   const [dataToMap, setDataToMap] = useState(null);
@@ -51,7 +38,7 @@ const Cart = ({ filterType }) => {
 
   const handleAdd = (product) => {
     const cartProduct = cartItems.items.find((item) => item.id === product.id);
-  
+
     if (cartProduct && cartProduct.quantity > 0) {
       dispatch(increment(product.id)); // Increment quantity if product is already in cart
     } else {
@@ -59,20 +46,17 @@ const Cart = ({ filterType }) => {
       dispatch(increment(product.id)); // Increment quantity after adding
     }
   };
-  
 
-// After retrieving cartItems
-const cartItems = useSelector((state) => state.cart);  //get entire cart
+  // After retrieving cartItems
+  const cartItems = useSelector((state) => state.cart); //get entire cart
 
-// Mapping dataToMap with quantities
-const dataToMapWithQuantity = dataToMap?.map((product) => {
-  const cartProduct = cartItems.items.find((item) => item.id === product.id);
-  return { ...product, quantity: cartProduct ? cartProduct.quantity : 0 };
-});
+  // Mapping dataToMap with quantities
+  const dataToMapWithQuantity = dataToMap?.map((product) => {
+    const cartProduct = cartItems.items.find((item) => item.id === product.id);
+    return { ...product, quantity: cartProduct ? cartProduct.quantity : 0 };
+  });
 
-console.log("dataToMapWithQuantity",dataToMapWithQuantity)
-  
-
+  console.log("dataToMapWithQuantity", dataToMapWithQuantity);
 
   const data = [
     {
@@ -218,10 +202,7 @@ console.log("dataToMapWithQuantity",dataToMapWithQuantity)
     }
   }, [filterType]);
 
-
-
   // const [quantity, setQuantity] = useState(0); // Initialize quantity with 1
-
 
   const handleIncrement = (productId) => {
     dispatch(increment(productId));
@@ -230,7 +211,6 @@ console.log("dataToMapWithQuantity",dataToMapWithQuantity)
   const handleDecrement = (productId) => {
     dispatch(decrement(productId));
   };
-
 
   return (
     <>
@@ -259,34 +239,36 @@ console.log("dataToMapWithQuantity",dataToMapWithQuantity)
                 >
                   <Typography variant="title">{product.price} ₹ </Typography>
                   {product.quantity > 0 ? (
-                  <ButtonGroup
-                    disableElevation
-                    variant="contained"
-                    aria-label="Quantity control buttons"
-                  >
+                    <ButtonGroup
+                      disableElevation
+                      variant="contained"
+                      aria-label="Quantity control buttons"
+                    >
+                      <Button
+                        size="small"
+                        onClick={() => handleDecrement(product.id)}
+                      >
+                        -
+                      </Button>
+                      <Typography variant="body1">
+                        {product.quantity}
+                      </Typography>
+                      <Button
+                        size="small"
+                        onClick={() => handleIncrement(product.id)}
+                      >
+                        +
+                      </Button>
+                    </ButtonGroup>
+                  ) : (
                     <Button
                       size="small"
-                      onClick={() => handleDecrement(product.id)}
+                      variant="contained"
+                      onClick={() => handleAdd(product)}
                     >
-                      -
+                      Add
                     </Button>
-                    <Typography variant="body1">{product.quantity}</Typography>
-                    <Button
-                      size="small"
-                      onClick={() => handleIncrement(product.id)}
-                    >
-                      +
-                    </Button>
-                  </ButtonGroup>
-                ) : (
-                  <Button
-                    size="small"
-                    variant="contained"
-                    onClick={() => handleAdd(product)}
-                  >
-                    Add
-                  </Button>
-                )}
+                  )}
                 </CardActions>
               </Card>
             </Grid>

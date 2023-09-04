@@ -1,12 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
 import {
-  Container,
-  CardActionArea,
-  CardMedia,
-  Card,
-  Grid,
-  Box,
+  Container
 } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -32,7 +27,7 @@ const Carosual = () => {
     <Container maxWidth="xl" sx={{ mt: 2, mb: 5 }}>
       <Slider {...settings}>
         {images.map((image, index) => (
-          <img src={image} key={index}></img>
+          <img src={image} alt="carosual images"  key={index}></img>
         ))}
       </Slider>
     </Container>
