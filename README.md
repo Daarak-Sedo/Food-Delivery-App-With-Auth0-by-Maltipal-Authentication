@@ -1,19 +1,26 @@
-The assignment involves creating a captivating landing page with the following components and functionalities - 
-Navbar with Routing: Implement a navigation bar with the following options:
-Home
-About Us
-Services
-Portfolio
-Contact Us
-Slider with React Carousel: Utilize either the react-carousel or react-slick library to create an auto-sliding image carousel. The carousel should be designed to display a minimum of 4 images, each fitting perfectly within the screen. Ensure that the images chosen are relevant to the theme of the assignment or topic you have chosen.
-Welcome Note and Description: Incorporate two distinct sections, each with its own heading and content:
-Welcome Note: A warm welcome message that sets the tone for the page.
-Project Description: A brief description that aligns with the heading of the project. This section should be visually appealing and engaging.
-Footer with App Heading: Design a footer section as illustrated in the provided image. Include the app's heading or a concise description that encapsulates the essence of the project.
-Evaluation Criteria:
-UI Design: We are looking for well-designed and visually appealing user interfaces that captivate the viewer.
-Slider Functionality: The image slider should seamlessly transition images in an auto-slide manner.
-Navbar Routing: The navigation bar should enable smooth routing between different sections of the page.
+# Food Delivery App
+Welcome to the documentation for our Food Delivery App, a feature-rich platform that brings delicious meals to your doorstep. This app is designed to make the food ordering and delivery experience seamless and enjoyable for both customers and restaurant owners.
+
+# Technology Stack
+Our Food Delivery App is built using the following technology stack:-
+
+Frontend: React, Redux, HTML, CSS
+Backend: Node.js, Express.js, MongoDB
+Authentication: JWT (JSON Web Tokens) ,  Auth0 - for Multipal Social Authentication
+Payment Integration: Stripe
+Real-Time Updates: WebSockets (for order tracking)
+
+# Ref Video -   https://youtu.be/oA-K3DfG1QY?si=lTKtPo__QnD5uj4f
+
+# Demo - 
+![Screenshot (5)](https://github.com/Daarak-Sedo/Food-Delivery-App-With-Auth0-by-Maltipal-Authentication/assets/107810689/11d76bd7-f9d3-4b42-908f-03c2329469b3)
+
+![Screenshot (6)](https://github.com/Daarak-Sedo/Food-Delivery-App-With-Auth0-by-Maltipal-Authentication/assets/107810689/f6eb0367-b9e5-4ed3-ae9e-39fb50548cd2)
+
+![Screenshot (7)](https://github.com/Daarak-Sedo/Food-Delivery-App-With-Auth0-by-Maltipal-Authentication/assets/107810689/4c596933-9e68-4d65-a2b1-bcf4ae1b0a83)
 
 
-#ref video  -  https://youtu.be/oA-K3DfG1QY?si=DbYUxVVLD3mAQyPz
+![Screenshot (8)](https://github.com/Daarak-Sedo/Food-Delivery-App-With-Auth0-by-Maltipal-Authentication/assets/107810689/f5a73623-6282-42ac-b3ff-1cb2d3981a33)
+
+![Screenshot (9)](https://github.com/Daarak-Sedo/Food-Delivery-App-With-Auth0-by-Maltipal-Authentication/assets/107810689/06245d09-d1f9-4b73-824c-c0d5068ac4c6)
+
