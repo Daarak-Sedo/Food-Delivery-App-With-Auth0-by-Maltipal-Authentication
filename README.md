@@ -14,3 +14,6 @@ Evaluation Criteria:
 UI Design: We are looking for well-designed and visually appealing user interfaces that captivate the viewer.
 Slider Functionality: The image slider should seamlessly transition images in an auto-slide manner.
 Navbar Routing: The navigation bar should enable smooth routing between different sections of the page.
+
+
+#ref video  -  https://youtu.be/oA-K3DfG1QY?si=DbYUxVVLD3mAQyPz
